@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1022989780671",
+    "project_id": "swap-c21ab",
+    "storage_bucket": "swap-c21ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022989780671:android:e1fc2683d2390d0a60680a",
+        "android_client_info": {
+          "package_name": "com.anonymous.swapland"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWyMXFI8zyWjEsQR0O_d3CU7RKwrSq2P4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
