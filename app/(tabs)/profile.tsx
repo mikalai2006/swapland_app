@@ -20,6 +20,7 @@ import SwitchMode from "@/components/SwitchMode";
 import UserSettingForm from "@/components/user/UserSettingForm";
 import UserSettingGeo from "@/components/user/UserSettingGeo";
 import { getNoun } from "@/utils/utils";
+import { router } from "expo-router";
 
 export default function TabProfileScreen() {
   const dispatch = useAppDispatch();
@@ -34,25 +35,69 @@ export default function TabProfileScreen() {
       <SafeAreaView>
         <View className="flex-1 p-4">
           <SwitchMode />
-          {tokensFromStore?.access_token ? (
+          {userFromStore && tokensFromStore?.access_token ? (
             <>
               <UserSettingAvatar />
+
               <Card className="my-4">
-                <Text className="mb-4 text-2xl font-bold text-center text-s-800 dark:text-s-200">
-                  {userFromStore?.bal}{" "}
-                  {getNoun(userFromStore?.bal, "балл", "балла", "баллов")}
-                </Text>
-                <UIButton
-                  type="secondary"
-                  text="Пополнить баллы"
-                  icon="iChevronRight"
-                  startText
-                />
+                <View className="py-2 border-b border-s-100 dark:border-s-800">
+                  <UIButton
+                    type="link"
+                    onPress={() => {
+                      router.navigate({
+                        pathname: "/address/[userId]",
+                        params: {
+                          userId: userFromStore.id,
+                        },
+                      });
+                    }}
+                  >
+                    <View className="flex-row gap-4">
+                      <Text className="flex-auto text-lg text-s-800 dark:text-s-200">
+                        {userFromStore.name}
+                      </Text>
+                      <SIcon path="iChevronRight" size={20} />
+                    </View>
+                  </UIButton>
+                </View>
+                <View className="py-2 flex-row gap-4 items-center border-b border-s-100 dark:border-s-800">
+                  <Text className="flex-auto px-4 text-xl font-bold text-s-800 dark:text-s-200">
+                    {userFromStore?.bal}{" "}
+                    {getNoun(userFromStore?.bal, "балл", "балла", "баллов")}
+                  </Text>
+                  <UIButton
+                    type="secondary"
+                    text="Пополнить"
+                    icon="iChevronRight"
+                    startText
+                  />
+                </View>
+                <View className="py-2">
+                  <UIButton
+                    type="link"
+                    onPress={() => {
+                      router.navigate({
+                        pathname: "/address/[userId]",
+                        params: {
+                          userId: userFromStore.id,
+                        },
+                      });
+                    }}
+                  >
+                    <View className="flex-row gap-4">
+                      <Text className="flex-auto text-lg text-s-800 dark:text-s-200">
+                        Мои адреса
+                      </Text>
+                      <SIcon path="iChevronRight" size={20} />
+                    </View>
+                  </UIButton>
+                </View>
               </Card>
-              <UserSettingForm />
+
+              {/* <UserSettingForm />
               <Card className="mt-4">
                 <UserSettingGeo />
-              </Card>
+              </Card> */}
               <View className="mt-4">
                 <Card>
                   <UIButton type="link" onPress={onLogout}>

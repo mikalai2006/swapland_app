@@ -62,9 +62,11 @@ const UserSettingGeo = () => {
       <Text className="text-lg text-s-800 dark:text-s-200">
         Текущее местонахождение:
       </Text>
-      <Text className="text-lg font-bold text-s-800 dark:text-s-200 mb-6">
-        {locationFromDb?.address.country}, {locationFromDb?.address.city}
-      </Text>
+      {locationFromDb?.address && (
+        <Text className="text-lg font-bold text-s-800 dark:text-s-200 mb-6">
+          {locationFromDb?.address.country}, {locationFromDb?.address.city}
+        </Text>
+      )}
       <UIButton
         text="Получить мое геоположение"
         type="secondary"

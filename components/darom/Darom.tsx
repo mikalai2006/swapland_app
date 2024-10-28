@@ -101,7 +101,7 @@ const Darom = ({ productId }: DaromProps) => {
     <View className="">
       <UILabel text="Запросы в дар" />
       {isLoading ? (
-        <SSkeleton className="mt-4 h-60 bg-s-50 dark:bg-s-800 flex items-center justify-center">
+        <SSkeleton className="mt-4 h-24 flex items-center justify-center">
           <ActivityIndicator size={30} color={Colors.s[500]} />
         </SSkeleton>
       ) : (

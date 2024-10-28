@@ -11,6 +11,7 @@ export class ProductSchema extends Realm.Object<ProductSchema> {
   cost!: number;
   lat!: number;
   lon!: number;
+  addressId?: string;
   actions?: Realm.List<number>;
   images?: Realm.List<ImageSchema>;
   // user!: UserSchema;
@@ -29,6 +30,7 @@ export class ProductSchema extends Realm.Object<ProductSchema> {
       cost: "int",
       lat: "float",
       lon: "float",
+      addressId: "string?",
       actions: "int[]",
       images: "ImageSchema[]",
       // user: {

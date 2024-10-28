@@ -15,7 +15,7 @@ import {
   useGlobalSearchParams,
 } from "expo-router";
 import useProduct from "@/hooks/useProduct";
-import { IImage } from "@/types";
+import { IAddress, IImage } from "@/types";
 import RText from "@/components/r/RText";
 import UICategory from "@/components/ui/UICategory";
 import UIUpload from "@/components/ui/UIUpload";
@@ -25,8 +25,11 @@ import UIButtonBack from "@/components/ui/UIButtonBack";
 import { SSkeleton } from "@/components/ui/SSkeleton";
 import { Colors } from "@/utils/Colors";
 import ProductShortInfo from "@/components/product/ProductShortInfo";
-import { useQuery } from "@realm/react";
+import { useObject, useQuery } from "@realm/react";
 import { OfferSchema } from "@/schema/OfferSchema";
+import UIAddressChooser from "@/components/ui/UIAddressChooser";
+import { AddressSchema } from "@/schema/AddressSchema";
+import { BSON } from "realm";
 
 export default function Modal() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -41,15 +44,28 @@ export default function Modal() {
   const [categoryId, setCategoryId] = useState<string>("");
   const [actions, setActions] = useState<number[]>([]);
   const [cost, setCost] = useState<number>(1);
-  const onUpdateCost = (value: string) => {
-    setCost(parseInt(value, 10) || 0);
-  };
+  const [addressId, setAddressId] = useState<string>(
+    "000000000000000000000000"
+  );
+  // const onUpdateCost = (value: string) => {
+  //   setCost(parseInt(value, 10) || 0);
+  // };
+
+  const address = useObject(AddressSchema, new BSON.ObjectId(addressId));
 
   useEffect(() => {
     product?.images && setImages(product?.images);
     // product?.title && setTitle(product?.title);
     product?.description && setDescription(product?.description);
     product?.categoryId && setCategoryId(product?.categoryId);
+
+    console.log("address: ", address, product?.addressId);
+    if (address?.address) {
+      setAddressId(address._id.toString());
+    } else if (product?.addressId) {
+      setAddressId(product?.addressId);
+    }
+
     product?.cost && setCost(product?.cost);
     product?.actions && setActions(product?.actions);
   }, [product]);
@@ -63,7 +79,9 @@ export default function Modal() {
     setCategoryId("");
     setCost(0);
     setActions([]);
+    setAddressId("000000000000000000000000");
   };
+
   useEffect(() => {
     addListener("beforeRemove", callbackRemovePage);
 
@@ -72,10 +90,14 @@ export default function Modal() {
     };
   }, []);
 
-  const glob = useGlobalSearchParams<{ categoryIdx: string }>();
+  const glob = useGlobalSearchParams<{
+    categoryIdx: string;
+    addressId: string;
+  }>();
   const onGetRouteParams = () => {
     // console.log("glob =", glob);
     glob.categoryIdx && setCategoryId(glob.categoryIdx);
+    glob.addressId && setAddressId(glob.addressId);
   };
   useEffect(() => {
     addListener("focus", onGetRouteParams);
@@ -90,6 +112,10 @@ export default function Modal() {
   );
 
   const onCreateProduct = useCallback(async () => {
+    if (!address) {
+      return;
+    }
+
     const data = new FormData();
 
     for (let index = 0; index < images.length; index++) {
@@ -106,11 +132,15 @@ export default function Modal() {
     data.append("description", description);
     data.append("categoryId", categoryId);
     data.append("cost", cost);
+    data.append("lat", address.lat);
+    data.append("lon", address.lon);
+    data.append("addressId", address._id.toString());
+
     for (let index = 0; index < actions.length; index++) {
       const element = actions[index];
       data.append("actions", element);
     }
-    console.log(data);
+    // console.log(data);
 
     await onFetchWithAuth(hostAPI + "/product", {
       method: "POST",
@@ -127,15 +157,16 @@ export default function Modal() {
           return;
         }
 
+        callbackRemovePage();
         router.back();
       })
       .catch((error) => {
         console.log("Create error:", error);
       });
-  }, [images, description, categoryId, cost, actions]);
+  }, [images, description, categoryId, cost, actions, addressId]);
 
   const onPatchProduct = useCallback(async () => {
-    if (!id) {
+    if (!id || !address) {
       return;
     }
     console.log({
@@ -155,6 +186,9 @@ export default function Modal() {
         categoryId,
         cost,
         actions,
+        lat: address?.lat,
+        lon: address?.lon,
+        addressId: address._id.toString(),
       }),
     })
       .then((res) => res.json())
@@ -168,14 +202,15 @@ export default function Modal() {
         router.back();
       })
       .catch((error) => {
-        console.log("Create error:", error);
+        console.log("Patch product error:", error);
       });
-  }, [images, description, categoryId, cost, actions]);
+  }, [images, description, categoryId, cost, actions, addressId]);
 
   const disabledSave = useMemo(
-    () => description === "" || !images.length,
-    [description, images, categoryId, cost, actions]
+    () => description === "" || !images.length || !addressId,
+    [description, images, categoryId, cost, actions, addressId]
   );
+
   const disabledPatch = useMemo(() => {
     const isIncluded = (arr1: number[], arr2: number[]) =>
       arr1?.length && arr2?.length
@@ -187,9 +222,10 @@ export default function Modal() {
       categoryId === product?.categoryId &&
       cost === product?.cost &&
       isIncluded(actions, product.actions) &&
-      actions.length === product.actions.length
+      actions.length === product.actions.length &&
+      address?._id.toString() === product.addressId
     );
-  }, [description, categoryId, cost, actions]);
+  }, [description, categoryId, cost, actions, product, address]);
 
   const onRemoveProductAlert = () => {
     Alert.alert("Удаление", "Вы действительно хотите удалить товар?", [
@@ -250,6 +286,7 @@ export default function Modal() {
               </>
             ) : (
               <>
+                {/* <Text>{JSON.stringify(address)}</Text> */}
                 {offers.length > 0 && (
                   <Card className="mb-4 bg-r-300 dark:bg-r-900">
                     <Text className="text-r-900 dark:text-r-300 text-lg font-medium leading-5">
@@ -267,6 +304,17 @@ export default function Modal() {
                     service="product"
                     serviceId={product?.id}
                     disabled={offers.length > 0}
+                  />
+                </Card>
+
+                <Card className="mb-4">
+                  <UIAddressChooser
+                    title="Адрес"
+                    value={addressId}
+                    // onSetCategoryId={(categoryId) => {
+                    //   router.back();
+                    //   router.setParams({ categoryIdx: categoryId });
+                    // }}
                   />
                 </Card>
                 <Card className="mb-4">

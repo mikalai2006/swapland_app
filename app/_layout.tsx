@@ -31,6 +31,7 @@ import { OfferSchema } from "@/schema/OfferSchema";
 import { QuestionSchema } from "@/schema/QuestionSchema";
 import { MessageSchema } from "@/schema/MessageSchema";
 import { MessageRoomSchema } from "@/schema/MessageRoomSchema";
+import { AddressObjectSchema, AddressSchema } from "@/schema/AddressSchema";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -97,6 +98,8 @@ export default function RootLayout() {
         QuestionSchema,
         MessageSchema,
         MessageRoomSchema,
+        AddressSchema,
+        AddressObjectSchema,
       ]}
       inMemory
     >
@@ -208,6 +211,33 @@ export default function RootLayout() {
                 />
                 <Stack.Screen
                   name="modalquestion"
+                  options={{
+                    // title: "Вопросы",
+                    // presentation: "transparentModal",
+                    // animation: "slide_from_right",
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="address"
+                  options={{
+                    // title: "Вопросы",
+                    // presentation: "transparentModal",
+                    // animation: "slide_from_right",
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="mapaddaddress"
+                  options={{
+                    // title: "Вопросы",
+                    // presentation: "transparentModal",
+                    // animation: "slide_from_right",
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="map"
                   options={{
                     // title: "Вопросы",
                     // presentation: "transparentModal",

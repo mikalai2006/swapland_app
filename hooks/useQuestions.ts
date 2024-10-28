@@ -42,13 +42,13 @@ const useQuestions = (props: IuseQuestionsProps) => {
     let ignore = false;
     const onFindQuestions = async () => {
       try {
-        console.log("useQuestions: ", {
-          productId: productId || undefined,
-          userId: userId || undefined,
-          userProductId,
-          limit: 100,
-          skip: 0,
-        });
+        // console.log("useQuestions: ", {
+        //   productId: productId || undefined,
+        //   userId: userId || undefined,
+        //   userProductId,
+        //   limit: 100,
+        //   skip: 0,
+        // });
 
         // await onGetNode(activeLanguageFromStore?.code || 'en', localNode)
         await onFetchWithAuth(

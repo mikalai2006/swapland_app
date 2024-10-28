@@ -140,6 +140,26 @@ const useProducts = (props: IUseProductsProps) => {
                         );
                       }
 
+                      for (
+                        let i = 0, total = responseProductsData.length;
+                        i < total;
+                        i++
+                      ) {
+                        if (responseProductsData[i].address) {
+                          realm.create(
+                            "AddressSchema",
+                            {
+                              ...responseProductsData[i].address,
+                              // sid: responseProductsData[i].user.id,
+                              _id: new BSON.ObjectId(
+                                responseProductsData[i].address.id
+                              ),
+                            },
+                            UpdateMode.Modified
+                          );
+                        }
+                      }
+
                       // const allOffers = responseProductsData.reduce(
                       //   (ac, item) => {
                       //     ac.push(...item.offers);

@@ -12,7 +12,7 @@ import { user } from "@/store/storeSlice";
 import SIcon from "../ui/SIcon";
 import UIButton from "../ui/UIButton";
 import { router } from "expo-router";
-import { getNoun } from "@/utils/utils";
+import { getNoun, getObjectId } from "@/utils/utils";
 import BadgeTabLots from "../badge/BadgeTabLots";
 import { ProductSchema } from "@/schema/ProductSchema";
 import OfferButtonChangeStatus from "./OfferButtonChangeStatus";
@@ -97,7 +97,7 @@ export default function OfferListItem({
             </>
           )}
         </View>
-        {offer?.status < 0 && (
+        {getObjectId(offer?.rejectUserId) != "0" && (
           <View className="bg-r-500/10 rounded-md p-2 flex-row flex-wrap gap-0">
             <Text className="text-base text-r-500 dark:text-r-200 leading-5">
               {offer.rejectUserId === offer.userId
@@ -118,7 +118,7 @@ export default function OfferListItem({
           offer.status >= 0 &&
           !winOffer && (
             <OfferButtonChangeStatus
-              type="secondary"
+              type="primary"
               win={1}
               isTimerComplete={false}
               productId={product._id}
@@ -133,7 +133,7 @@ export default function OfferListItem({
           <>
             {userFromStore?.id === product.userId && (
               <UIButton
-                type="primary"
+                type="secondary"
                 text="Отказать"
                 icon="iChevronRight"
                 startText
@@ -149,7 +149,7 @@ export default function OfferListItem({
             )}
             {userFromStore?.id === offer?.userId && (
               <UIButton
-                type="primary"
+                type="secondary"
                 text="Отменить запрос"
                 icon="iChevronRight"
                 startText

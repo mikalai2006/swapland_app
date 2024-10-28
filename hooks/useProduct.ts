@@ -99,6 +99,17 @@ const useProduct = (props: IUseProductProps) => {
                     UpdateMode.Modified
                   );
 
+                  if (responseProduct.address) {
+                    realm.create(
+                      "AddressSchema",
+                      {
+                        ...responseProduct.address,
+                        // sid: responseProductsData[i].user.id,
+                        _id: new BSON.ObjectId(responseProduct.address.id),
+                      },
+                      UpdateMode.Modified
+                    );
+                  }
                   // const offersProduct = responseProduct.offers;
                   // for (
                   //   let i = 0, total = offersProduct.length;

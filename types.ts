@@ -38,6 +38,10 @@ export interface IProduct {
   images: IImage[];
   user: IUser;
   offers: IOffer[];
+  lat: number;
+  lon: number;
+  addressId: string;
+  address: IAddress;
   createdAt: Date;
   updatedAt: string;
 }
@@ -115,15 +119,25 @@ export interface IUserStat {
 }
 
 export interface IAddress {
-  poscode: string;
-  country: string;
-  house_number: string;
-  road: string;
-  city: string;
-  state: string;
-  city_district: string;
-  "ISO3166-2-lvl4": string;
-  country_code: string;
+  id: string;
+  userId: string;
+  address: {
+    "ISO3166-2-lvl4": string;
+    city: string;
+    city_district: string;
+    country: string;
+    country_code: string;
+    house_number: string;
+    postcode: string;
+    road: string;
+    state: string;
+  };
+  daddress: string;
+  lat: number;
+  lon: number;
+  osmId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IUserLocation {
@@ -452,6 +466,10 @@ export type TNodeInput = {
 export interface ILatLng {
   lat: number;
   lng: number;
+}
+export interface ILatLon {
+  lat: number;
+  lon: number;
 }
 
 export type IBounds = {

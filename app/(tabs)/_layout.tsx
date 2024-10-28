@@ -21,18 +21,22 @@ import BadgeTabMessage from "@/components/badge/BadgeTabMessage";
 import useMessagesRooms from "@/hooks/useMessagesRooms";
 import useOffers from "@/hooks/useOffers";
 import useMessages from "@/hooks/useMessages";
+import useAddresses from "@/hooks/useAddresses";
 
 export default function TabLayout() {
   const { colorScheme, setColorScheme } = useColorScheme();
 
   const userFromStore = useAppSelector(user);
 
-  const { messagesRooms } = useMessagesRooms({
-    userId: userFromStore?.id,
-  });
+  if (userFromStore?.id) {
+    const { messagesRooms } = useMessagesRooms({
+      userId: userFromStore?.id,
+    });
 
-  useOffers({ userId: userFromStore?.id });
+    useOffers({ userId: userFromStore?.id });
 
+    useAddresses({ userId: userFromStore?.id });
+  }
   // const roomIds = useMemo(
   //   () => messagesRooms.map((x) => x._id.toString()) || undefined,
   //   []
@@ -154,7 +158,7 @@ export default function TabLayout() {
           //   return null;
           // },
           tabBarIcon: ({ color, focused }) =>
-            !userFromStore?.images?.length ? (
+            !userFromStore?.images ? (
               <IconAwesome6
                 name={focused ? "user" : "user"}
                 size={20}

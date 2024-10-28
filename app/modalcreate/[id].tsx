@@ -15,11 +15,12 @@ import {
   useGlobalSearchParams,
 } from "expo-router";
 import useProduct from "@/hooks/useProduct";
-import { IImage } from "@/types";
+import { IAddress, IImage } from "@/types";
 import RText from "@/components/r/RText";
 import UICategory from "@/components/ui/UICategory";
 import UIUpload from "@/components/ui/UIUpload";
 import UIAction from "@/components/ui/UIAction";
+import UIAddress from "@/components/ui/UIAddress";
 
 export default function Modal() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -32,6 +33,7 @@ export default function Modal() {
   // const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState<string>("");
+  const [address, setAddress] = useState<IAddress | null>(null);
   const [actions, setActions] = useState<number[]>([]);
   const [cost, setCost] = useState<number>(1);
   const onUpdateCost = (value: string) => {
@@ -43,6 +45,7 @@ export default function Modal() {
     // product?.title && setTitle(product?.title);
     product?.description && setDescription(product?.description);
     product?.categoryId && setCategoryId(product?.categoryId);
+    product?.address && setAddress(product?.address);
     product?.cost && setCost(product?.cost);
     product?.actions && setActions(product?.actions);
   }, [product]);
@@ -54,6 +57,7 @@ export default function Modal() {
     // setTitle("");
     setDescription("");
     setCategoryId("");
+    setAddress(null);
     setCost(0);
     setActions([]);
   };
@@ -94,6 +98,7 @@ export default function Modal() {
     // data.append("title", title);
     data.append("description", description);
     data.append("categoryId", categoryId);
+    data.append("address", address);
     data.append("cost", cost);
     for (let index = 0; index < actions.length; index++) {
       const element = actions[index];
@@ -227,6 +232,16 @@ export default function Modal() {
             <UICategory
               title="Категория"
               value={categoryId}
+              // onSetCategoryId={(categoryId) => {
+              //   router.back();
+              //   router.setParams({ categoryIdx: categoryId });
+              // }}
+            />
+          </Card>
+          <Card className="mb-4">
+            <UIAddress
+              title="Адрес"
+              value={address}
               // onSetCategoryId={(categoryId) => {
               //   router.back();
               //   router.setParams({ categoryIdx: categoryId });

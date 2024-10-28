@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import { ProductSchema } from "@/schema/ProductSchema";
 import BadgeTabLots from "../badge/BadgeTabLots";
 import OfferButtonChangeStatus from "../offer/OfferButtonChangeStatus";
+import { getObjectId } from "@/utils/utils";
 
 export type IDaromUserListItemProps = {
   id: BSON.ObjectId;
@@ -122,7 +123,7 @@ export default function DaromUserListItem({
             </Text>
           )}
         </View>
-        {offer?.status < 0 && (
+        {getObjectId(offer?.rejectUserId) != "0" && (
           <View className="bg-r-500/10 rounded-md p-2 flex-row flex-wrap gap-0">
             <Text className="text-base text-r-500 dark:text-r-200 leading-5">
               {offer.rejectUserId === offer.userId

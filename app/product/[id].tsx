@@ -116,9 +116,14 @@ export default function ProductScreen() {
                   {product?.description}
                 </Text>
               </View>
-              <View className="pt-2">
-                <ProductLocation userId={product.userId} />
-              </View>
+              {product.addressId && (
+                <View className="pt-2">
+                  <ProductLocation
+                    userId={product.userId}
+                    addressId={product.addressId}
+                  />
+                </View>
+              )}
 
               {/* <Text className="text-4xl">{JSON.stringify(product || {})}</Text> */}
               {/* <View className="flex flex-row gap-4 mt-4 items-center">
@@ -185,6 +190,12 @@ export default function ProductScreen() {
                   </Card>
                 )}
               </>
+            )}
+
+            {product.status == -1 && (
+              <Text className="py-4 text-center text-lg text-s-500 dark:text-s-300">
+                Лот отдан
+              </Text>
             )}
             {/* )} */}
 
