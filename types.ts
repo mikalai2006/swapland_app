@@ -124,6 +124,7 @@ export interface IAddress {
   address: {
     "ISO3166-2-lvl4": string;
     city: string;
+    town: string;
     city_district: string;
     country: string;
     country_code: string;
@@ -493,6 +494,8 @@ export type IFilterSort = {
 export type IFilter = {
   categories: string[];
   showLessBal: boolean;
+  address: IAddress | null;
+  distance: number;
   numColumns: number;
   sort: IFilterSort;
 };

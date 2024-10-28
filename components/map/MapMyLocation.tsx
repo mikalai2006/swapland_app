@@ -7,12 +7,17 @@ import { useTranslation } from "react-i18next";
 import UIButton from "../ui/UIButton";
 import { hostAPI } from "@/utils/global";
 import useAuth from "@/hooks/useAuth";
-import Card from "../Card";
 
 import * as Location from "expo-location";
 import { useFetchWithAuth } from "@/hooks/useFetchWithAuth";
+import SIcon from "../ui/SIcon";
+import { Colors } from "@/utils/Colors";
 
-const UserSettingGeo = () => {
+export type IMapMyLocationProps = {
+  callback: (location: Location.LocationObject) => void;
+};
+
+const MapMyLocation = ({ callback }: IMapMyLocationProps) => {
   const { t } = useTranslation();
 
   const { onGetIam } = useAuth();
@@ -23,6 +28,7 @@ const UserSettingGeo = () => {
 
   const [errorMsg, setErrorMsg] = useState(null);
   const [location, setLocation] = useState(null);
+  const [loading, setLoading] = useState(false);
   const onGetGeo = useCallback(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -33,22 +39,28 @@ const UserSettingGeo = () => {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      if (userFromStore?.id) {
-        await onFetchWithAuth(`${hostAPI}/user/${userFromStore?.id}/location`, {
-          method: "PATCH",
-          body: JSON.stringify({
-            lat: location.coords.latitude,
-            lon: location.coords.longitude,
-          }),
-        })
-          .then((res) => res.json())
-          .then((res: any) => {
-            onGetIam();
-          })
-          .catch((e) => {
-            console.log("UserSettingGeo Error", e);
-          });
-      }
+      callback(location);
+      // if (userFromStore?.id) {
+      //   setLoading(true);
+      //   await onFetchWithAuth(`${hostAPI}/user/${userFromStore?.id}/location`, {
+      //     method: "PATCH",
+      //     body: JSON.stringify({
+      //       lat: location.coords.latitude,
+      //       lon: location.coords.longitude,
+      //     }),
+      //   })
+      //     .then((res) => res.json())
+      //     .then((res: any) => {
+      //       onGetIam();
+      //       callback(location);
+      //     })
+      //     .catch((e) => {
+      //       console.log("MapMyLocation Error", e);
+      //     })
+      //     .finally(() => {
+      //       setLoading(false);
+      //     });
+      // }
     })();
   }, []);
 
@@ -59,19 +71,23 @@ const UserSettingGeo = () => {
 
   return (
     <View>
-      <Text className="text-lg text-s-800 dark:text-s-200">
+      {/* <Text className="text-lg text-s-800 dark:text-s-200">
         Текущее местонахождение:
       </Text>
       {locationFromDb?.address && (
         <Text className="text-lg font-bold text-s-800 dark:text-s-200 mb-6">
           {locationFromDb?.address.country}, {locationFromDb?.address.city}
         </Text>
-      )}
+      )} */}
       <UIButton
-        text="Получить мое геоположение"
-        type="secondary"
+        type="link"
+        loading={loading}
+        // disabled={loading}
+        className="p-4 bg-p-500 rounded-full"
         onPress={onGetGeo}
-      />
+      >
+        <SIcon path="iCenterLocation" size={30} color={Colors.white} />
+      </UIButton>
       {/* <Text className="text-base text-s-800 dark:text-s-200">
         {JSON.stringify(location)}
         {locationFromDb}
@@ -80,4 +96,4 @@ const UserSettingGeo = () => {
   );
 };
 
-export default UserSettingGeo;
+export default MapMyLocation;

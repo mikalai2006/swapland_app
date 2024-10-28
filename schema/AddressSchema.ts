@@ -3,6 +3,7 @@ import Realm, { BSON, ObjectSchema } from "realm";
 export class AddressObjectSchema extends Realm.Object<AddressObjectSchema> {
   city_district?: string;
   country?: string;
+  county?: string;
   country_code?: string;
   house_number?: string;
   postcode?: string;
@@ -17,6 +18,7 @@ export class AddressObjectSchema extends Realm.Object<AddressObjectSchema> {
     properties: {
       city_district: "string?",
       country: "string?",
+      county: "string?",
       country_code: "string?",
       house_number: "string?",
       postcode: "string?",

@@ -237,7 +237,7 @@ export default function RootLayout() {
                   }}
                 />
                 <Stack.Screen
-                  name="map"
+                  name="mapfilter"
                   options={{
                     // title: "Вопросы",
                     // presentation: "transparentModal",

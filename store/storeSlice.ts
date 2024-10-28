@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import {
   AppState,
+  IAddress,
   ICategory,
   IFilter,
   IFilterSort,
@@ -50,6 +51,8 @@ const initialState: AppState = {
       key: "createdAt",
       value: 1,
     },
+    address: null,
+    distance: 3,
     numColumns: 1,
   },
   categories: [],
@@ -146,6 +149,12 @@ export const storeSlice = createSlice({
     },
     setFilterLessBal: (state, action: PayloadAction<boolean>) => {
       state.filter.showLessBal = action.payload;
+    },
+    setFilterDistance: (state, action: PayloadAction<number>) => {
+      state.filter.distance = action.payload;
+    },
+    setFilterAddress: (state, action: PayloadAction<IAddress>) => {
+      state.filter.address = action.payload;
     },
     setFilterSort: (state, action: PayloadAction<IFilterSort>) => {
       state.filter.sort = action.payload;
@@ -258,6 +267,8 @@ export const {
   setCountries,
   setFilter,
   setFilterCategory,
+  setFilterAddress,
+  setFilterDistance,
   setFilterLessBal,
   setFilterTypeList,
   setFilterSort,

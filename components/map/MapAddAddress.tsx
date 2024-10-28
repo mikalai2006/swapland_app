@@ -23,14 +23,15 @@ import SIcon from "../ui/SIcon";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFetchWithAuth } from "@/hooks/useFetchWithAuth";
 import { hostAPI } from "@/utils/global";
-import { ILatLon } from "@/types";
+import { IAddress, ILatLon } from "@/types";
+import MapMyLocation from "./MapMyLocation";
 
 type Props = {};
 
 const MapAddAddress = (props: Props) => {
   const glob = useGlobalSearchParams<{ address: string }>();
 
-  const address = useMemo(
+  const address = useMemo<IAddress>(
     () => (glob.address ? JSON.parse(glob.address) : null),
     [glob?.address]
   );
@@ -97,7 +98,7 @@ const MapAddAddress = (props: Props) => {
     const message = JSON.parse(e.nativeEvent.data);
     switch (message.event) {
       case "center":
-        console.log("center: ", center);
+        // console.log("center: ", center);
 
         setCenter(message.data);
         break;
@@ -206,31 +207,48 @@ const MapAddAddress = (props: Props) => {
         </Card>
       </View>
       <View className="absolute bottom-2 left-0 right-0 flex items-center">
-        <Card className="">
-          <Text className="text-lg text-s-800 dark:text-s-200 leading-5">
-            Нажмите сохранить, чтобы зафиксировать позицию{" "}
-            {/* {JSON.stringify(address)} */}
-            {JSON.stringify(center)}
-          </Text>
-          <View className="self-center">
-            <UIButton
-              text="Сохранить"
-              type="primary"
-              loading={loading}
-              disabled={loading}
-              onPress={() => {
-                onSave();
-                // sendMessage({
-                //   msg: "center",
-                //   center: { lat: 53.171386336718854, lon: 29.180430864870228 },
-                // });
-              }}
-            />
-          </View>
-        </Card>
+        {center.lat !== address.lat && center.lon !== address.lon && (
+          <Card className="">
+            <Text className="mb-4 text-lg text-s-800 dark:text-s-200 leading-5">
+              Нажмите сохранить, чтобы зафиксировать позицию
+              {/* {JSON.stringify(address)}
+              {JSON.stringify(center)} */}
+            </Text>
+            <View className="self-center">
+              <UIButton
+                text="Сохранить изменения"
+                type="primary"
+                loading={loading}
+                disabled={loading}
+                onPress={() => {
+                  onSave();
+                  // sendMessage({
+                  //   msg: "center",
+                  //   center: { lat: 53.171386336718854, lon: 29.180430864870228 },
+                  // });
+                }}
+              />
+            </View>
+          </Card>
+        )}
       </View>
 
-      <View className="absolute top-0 left-0 bottom-0 right-0 flex items-center z-50 justify-center pointer-events-none">
+      <View className="absolute bottom-60 right-0 flex items-center z-50 justify-center p-4">
+        <MapMyLocation
+          callback={(location) => {
+            console.log("location: ", location);
+            sendMessage({
+              msg: "center",
+              center: {
+                lat: location.coords.latitude,
+                lon: location.coords.longitude,
+              },
+            });
+          }}
+        />
+      </View>
+
+      <View className="absolute top-0 left-0 bottom-0 right-0 flex items-center z-40 justify-center pointer-events-none">
         <View style={{ marginTop: -48 }}>
           <SIcon
             path="iMarkerCenter"
@@ -240,7 +258,7 @@ const MapAddAddress = (props: Props) => {
         </View>
       </View>
       {loading && (
-        <View className="absolute top-0 left-0 bottom-0 right-0 flex items-center z-50 justify-center">
+        <View className="absolute top-0 left-0 bottom-0 right-0 flex items-center z-40 justify-center">
           <View style={{ marginTop: -62 }}>
             <ActivityIndicator size={43} color={Colors.s[200]} />
           </View>

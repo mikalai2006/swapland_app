@@ -127,10 +127,13 @@ export default function AddressesScreen() {
                                   : "text-s-800 dark:text-s-200"
                               }`}
                             >
-                              {/* {adr.address.country},{" "}
-                              {adr.address.city || adr.address.town},{" "}
-                              {adr.address.road} */}
-                              {adr.dAddress}
+                              {adr.address.country},{" "}
+                              {adr.address.county && adr.address.county + ", "}
+                              {adr.address.village ||
+                                adr.address.city ||
+                                adr.address.town}
+                              , {adr.address.road}
+                              {/* {adr.dAddress} */}
                             </Text>
                           </View>
                         </View>

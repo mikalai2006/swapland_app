@@ -59,7 +59,7 @@ export default function Modal() {
     product?.description && setDescription(product?.description);
     product?.categoryId && setCategoryId(product?.categoryId);
 
-    console.log("address: ", address, product?.addressId);
+    // console.log("address: ", address, product?.addressId);
     if (address?.address) {
       setAddressId(address._id.toString());
     } else if (product?.addressId) {
