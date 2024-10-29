@@ -207,7 +207,7 @@ const MapAddAddress = (props: Props) => {
         </Card>
       </View>
       <View className="absolute bottom-2 left-0 right-0 flex items-center">
-        {center.lat !== address.lat && center.lon !== address.lon && (
+        {center?.lat !== address?.lat && center?.lon !== address?.lon && (
           <Card className="">
             <Text className="mb-4 text-lg text-s-800 dark:text-s-200 leading-5">
               Нажмите сохранить, чтобы зафиксировать позицию

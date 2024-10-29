@@ -4,7 +4,7 @@ const { Colors } = require("./utils/Colors");
 import colors from "tailwindcss/colors";
 
 module.exports = {
-  // darkMode: "class",
+  darkMode: "class",
   content: [
     "./App.{js,jsx,ts,tsx}",
     "./app/**/*.{js,jsx,ts,tsx}",

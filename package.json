@@ -26,6 +26,7 @@
     "@realm/react": "^0.11.0",
     "@reduxjs/toolkit": "^2.2.7",
     "expo": "^51.0.36",
+    "expo-asset": "~10.0.10",
     "expo-constants": "~16.0.2",
     "expo-dev-client": "~4.0.27",
     "expo-device": "~6.0.2",
@@ -43,7 +44,7 @@
     "expo-system-ui": "~3.0.7",
     "expo-web-browser": "~13.0.3",
     "lodash": "^4.17.21",
-    "nativewind": "^4.0.1",
+    "nativewind": "^4.1.21",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "^15.0.2",
@@ -57,12 +58,11 @@
     "react-native-svg": "^15.7.1",
     "react-native-tab-view": "^3.5.2",
     "react-native-web": "~0.19.10",
+    "react-native-webview": "13.8.6",
     "react-redux": "^9.1.2",
     "realm": "^20.0.0",
     "redux-persist": "^6.0.0",
-    "tailwindcss": "^3.4.13",
-    "react-native-webview": "13.8.6",
-    "expo-asset": "~10.0.10"
+    "tailwindcss": "^3.4.14"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

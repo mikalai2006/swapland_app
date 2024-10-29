@@ -8,7 +8,6 @@ import "react-native-reanimated";
 
 import { store, persistor } from "../store/store";
 
-import "../tailwind.css";
 import "../localization/i18n";
 
 import { useColorScheme } from "nativewind";
@@ -32,6 +31,8 @@ import { QuestionSchema } from "@/schema/QuestionSchema";
 import { MessageSchema } from "@/schema/MessageSchema";
 import { MessageRoomSchema } from "@/schema/MessageRoomSchema";
 import { AddressObjectSchema, AddressSchema } from "@/schema/AddressSchema";
+
+import "../tailwind.css";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
